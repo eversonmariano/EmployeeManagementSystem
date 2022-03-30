@@ -5,6 +5,7 @@ import com.everson.backend.model.Employee;
 import com.everson.backend.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -39,14 +40,9 @@ public class EmployeeController {
     }
 
     //UPDATE employee - REST API
-    @PutMapping("/employees/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id,@RequestBody Employee employeeDetails) {
-        Employee employee = employeeRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id: " + id));
+    @PutMapping("/employees")
+    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee) {
 
-        employee.setFirstName(employeeDetails.getFirstName());
-        employee.setLastName(employeeDetails.getLastName());
-        employee.setEmailId(employeeDetails.getEmailId());
 
         Employee updateEmployee = employeeRepository.save(employee);
 

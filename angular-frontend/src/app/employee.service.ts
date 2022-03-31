@@ -8,7 +8,7 @@ import { Employee } from './employee';
 })
 export class EmployeeService {
 
-  private baseURL = "http://localhost:8080/api/v1/employees";
+  private baseURL = "http://local/api/v1/employees";
 
   constructor(private httpClient: HttpClient) { }
 
@@ -27,6 +27,7 @@ export class EmployeeService {
   updateEmployee(employee: Employee): Observable<Object>{
     return this.httpClient.put(`${this.baseURL}`, employee);
   }
+
 
 
  }

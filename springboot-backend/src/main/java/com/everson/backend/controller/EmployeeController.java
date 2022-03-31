@@ -8,7 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.StyledEditorKit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -41,12 +44,24 @@ public class EmployeeController {
 
     //UPDATE employee - REST API
     @PutMapping("/employees")
-    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee) {
+    public Employee updateEmployee(@RequestBody Employee employee) {
+        return employeeRepository.save(employee);
+    }
 
 
-        Employee updateEmployee = employeeRepository.save(employee);
+    //DELETE employee - REST API
+    @DeleteMapping(value = "/employees/{id}")
+    public ResponseEntity<Map<String, Boolean>> deleteEmployee(@PathVariable Long id){
+        Employee employee = employeeRepository.findById(id).
+                orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id: " + id));
 
-        return ResponseEntity.ok(updateEmployee);
+        employeeRepository.delete(employee);
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("deleted", Boolean.TRUE);
+        return ResponseEntity.ok(response);
 
     }
+
+
+
 }
